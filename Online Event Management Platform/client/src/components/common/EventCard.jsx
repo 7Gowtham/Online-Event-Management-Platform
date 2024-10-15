@@ -104,6 +104,10 @@ function EventCard({ image, title, description, eventId, location, date, time, c
                     </p>
                 </div>
 
+                <p className="text-gray-500 text-sm">
+                    <span className="font-semibold">Event ID:</span> {eventId}
+                </p>
+
                 <div className="mt-6 flex justify-between items-center">
                     {role === 'Admin' ? (
                         <div className="grid grid-cols-2 gap-3">
