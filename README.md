@@ -13,7 +13,7 @@
 - [Deployed URL](#deployed-url)
 
 ## Description
-Eventozor is an online event management platform that is developed for organizing and managing events. The platform features a dashboard for event organizers and administrators to track event performance, ticket sales, and attendee registrations.
+Eventozor is an online event management platform that is developed for organizing and managing events. The platform features a dashboard for administrators to track event performance, ticket sales, and attendee registrations.
 
 ## Features
 - User registration and login
