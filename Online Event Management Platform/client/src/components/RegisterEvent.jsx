@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import AxiosService from '../utils/AxiosService';
 import ApiRoutes from '../utils/ApiRoutes';
 import toast from 'react-hot-toast';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function RegisterEvent() {
   const location = useLocation();
   const { event } = location.state || {};
+  const navigate = useNavigate();
   let [formData, setFormData] = useState({
     eventId: '',
     title: '',
@@ -27,9 +28,10 @@ function RegisterEvent() {
     try {
       let { message } = await AxiosService.post(ApiRoutes.REGISTER_EVENT.path, formData, { authenticate: ApiRoutes.REGISTER_EVENT.auth });
       toast.success(message);
+      navigate('/home')
     } catch (error) {
-      console.error(error);
-      toast.error(error.message || 'Registration failed');
+      // console.error(error);
+      toast.error(error.message);
     }
   };
 
