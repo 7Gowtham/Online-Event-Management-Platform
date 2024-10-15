@@ -12,6 +12,9 @@ const purchasedTicketSchema = new mongoose.Schema({
         type: String,
         required:[true, "Ticket ID is required"]
     },
+    bookingId:{
+        type: String,
+    },
     ticket_type:{
         type: String,
         enum:{
@@ -38,8 +41,12 @@ const purchasedTicketSchema = new mongoose.Schema({
     },
     paymentGateway: {
         type: String,
-        enum: ['Stripe', 'Razorpay'],
+        enum: ['Stripe'],
         required: false,
+    },
+    status:{ 
+        type: String, 
+        default: 'Active' 
     },
     transactionId: {
         type: String,

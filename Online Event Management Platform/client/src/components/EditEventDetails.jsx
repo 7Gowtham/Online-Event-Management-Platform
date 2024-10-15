@@ -5,7 +5,7 @@ import ApiRoutes from '../utils/ApiRoutes';
 import toast from 'react-hot-toast';
 
 function EditEventDetails() {
-    let {eventId} = useParams();
+    let { eventId } = useParams();
     let [eventDetails, setEventDetails] = useState({
         title: '',
         image: '',
@@ -16,7 +16,8 @@ function EditEventDetails() {
         category: '',
         vipPrice: '',
         generalPrice: '',
-        totalTickets: ''
+        vipTotalTickets: '',
+        generalTotalTickets: ''
     })
 
     let navigate = useNavigate()
@@ -39,10 +40,10 @@ function EditEventDetails() {
         });
     };
 
-    const handleSubmit = async(e) =>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            let {message} = await AxiosService.put(`${ApiRoutes.EDIT_EVENT_DETAILS.path}/${eventId}`, eventDetails, {authenticate:ApiRoutes.EDIT_EVENT_DETAILS.auth})
+            let { message } = await AxiosService.put(`${ApiRoutes.EDIT_EVENT_DETAILS.path}/${eventId}`, eventDetails, { authenticate: ApiRoutes.EDIT_EVENT_DETAILS.auth })
             toast.success(message)
             navigate(`/view-details/${eventId}`)
         } catch (error) {
@@ -50,18 +51,18 @@ function EditEventDetails() {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getData();
-    },[eventId])
+    }, [eventId])
 
     return <>
-        <div className="container mx-auto my-10 p-5 max-w-lg">
-            <h1 className="text-2xl font-bold mb-6 text-center">Update Event Details</h1>
-            <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="w-full max-w-lg mx-auto p-4 bg-white shadow-md rounded-md my-10">
+            <h1 className="text-2xl font-bold mb-4 text-center">Update Event Details</h1>
 
-                {/* Title Input */}
+            <form onSubmit={handleSubmit} className="space-y-6">
+               
                 <div>
-                    <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-2">
                         Event Title
                     </label>
                     <input
@@ -70,14 +71,14 @@ function EditEventDetails() {
                         name="title"
                         value={eventDetails.title}
                         onChange={handleChange}
-                        className="w-full mt-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="Event Title"
                         required
                     />
                 </div>
 
-                {/* Image URL Input */}
                 <div>
-                    <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">
                         Image URL
                     </label>
                     <input
@@ -86,13 +87,13 @@ function EditEventDetails() {
                         name="image"
                         value={eventDetails.image}
                         onChange={handleChange}
-                        className="w-full mt-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="Event Image URL"
                     />
                 </div>
 
-                {/* Description Input */}
                 <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">
                         Description
                     </label>
                     <textarea
@@ -101,14 +102,14 @@ function EditEventDetails() {
                         rows="4"
                         value={eventDetails.description}
                         onChange={handleChange}
-                        className="w-full mt-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="Event Description"
                         required
                     />
                 </div>
 
-                {/* Location Input */}
                 <div>
-                    <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="location" className="block text-gray-700 text-sm font-bold mb-2">
                         Location
                     </label>
                     <input
@@ -117,14 +118,14 @@ function EditEventDetails() {
                         name="location"
                         value={eventDetails.location}
                         onChange={handleChange}
-                        className="w-full mt-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="Event Location"
                         required
                     />
                 </div>
 
-                {/* Date Input */}
                 <div>
-                    <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2">
                         Event Date
                     </label>
                     <input
@@ -133,14 +134,13 @@ function EditEventDetails() {
                         name="date"
                         value={eventDetails.date ? new Date(eventDetails.date).toISOString().substring(0, 10) : ''}
                         onChange={handleChange}
-                        className="w-full mt-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         required
                     />
                 </div>
 
-                {/* Time Input */}
                 <div>
-                    <label htmlFor="time" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="time" className="block text-gray-700 text-sm font-bold mb-2">
                         Event Time
                     </label>
                     <input
@@ -149,14 +149,13 @@ function EditEventDetails() {
                         name="time"
                         value={eventDetails.time}
                         onChange={handleChange}
-                        className="w-full mt-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         required
                     />
                 </div>
 
-                {/* Category Input */}
                 <div>
-                    <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="category" className="block text-gray-700 text-sm font-bold mb-2">
                         Category
                     </label>
                     <input
@@ -165,14 +164,14 @@ function EditEventDetails() {
                         name="category"
                         value={eventDetails.category}
                         onChange={handleChange}
-                        className="w-full mt-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="Event Category"
                         required
                     />
                 </div>
 
-                {/* VIP Price Input */}
                 <div>
-                    <label htmlFor="vipPrice" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="vipPrice" className="block text-gray-700 text-sm font-bold mb-2">
                         VIP Ticket Price
                     </label>
                     <input
@@ -181,14 +180,14 @@ function EditEventDetails() {
                         name="vipPrice"
                         value={eventDetails.vipPrice}
                         onChange={handleChange}
-                        className="w-full mt-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="VIP Ticket Price"
                         required
                     />
                 </div>
 
-                {/* General Price Input */}
                 <div>
-                    <label htmlFor="generalPrice" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="generalPrice" className="block text-gray-700 text-sm font-bold mb-2">
                         General Ticket Price
                     </label>
                     <input
@@ -197,38 +196,55 @@ function EditEventDetails() {
                         name="generalPrice"
                         value={eventDetails.generalPrice}
                         onChange={handleChange}
-                        className="w-full mt-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="General Ticket Price"
                         required
                     />
                 </div>
 
-                {/* Total Tickets Input */}
                 <div>
-                    <label htmlFor="totalTickets" className="block text-sm font-medium text-gray-700">
-                        Total Tickets Available
+                    <label htmlFor="vipTotalTickets" className="block text-gray-700 text-sm font-bold mb-2">
+                        VIP Total Tickets Available
                     </label>
                     <input
                         type="number"
-                        id="totalTickets"
-                        name="totalTickets"
-                        value={eventDetails.totalTickets}
+                        id="vipTotalTickets"
+                        name="vipTotalTickets"
+                        value={eventDetails.vipTotalTickets}
                         onChange={handleChange}
-                        className="w-full mt-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="VIP Tickets"
                         required
                     />
                 </div>
 
-                {/* Submit Button */}
+                <div>
+                    <label htmlFor="generalTotalTickets" className="block text-gray-700 text-sm font-bold mb-2">
+                        General Total Tickets Available
+                    </label>
+                    <input
+                        type="number"
+                        id="generalTotalTickets"
+                        name="generalTotalTickets"
+                        value={eventDetails.generalTotalTickets}
+                        onChange={handleChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="General Tickets"
+                        required
+                    />
+                </div>
+
                 <div className="text-center">
                     <button
                         type="submit"
-                        className="w-full py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
                         Update Event
                     </button>
                 </div>
             </form>
         </div>
+
     </>
 }
 

@@ -14,7 +14,7 @@ function Events() {
       console.log(data)
       if (Array.isArray(data)) {
         setEvents(data);
-        toast.success(message);
+        // toast.success(message);
       } else {
         toast.error("Unexpected data format");
       }
@@ -50,7 +50,7 @@ function Events() {
                 <strong>Location:</strong> {event.eventDetails.location}
               </p>
               <p className="text-sm text-gray-500 mb-2">
-                <strong>Date:</strong> {event.eventDetails.date}
+                <strong>Date:</strong> {new Date(event.eventDetails.date).toLocaleDateString()}
               </p>
               <p className="text-sm text-gray-500 mb-2">
                 <strong>Time:</strong> {event.eventDetails.time}

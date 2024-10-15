@@ -51,13 +51,12 @@ function CreateEvent() {
 
   return <>
     <div className="p-8">
-      {/* Heading */}
       <h2 className="text-3xl font-bold text-center mb-8">Create Event</h2>
       <div className="flex flex-col lg:flex-row justify-between items-start p-8 space-y-8 lg:space-y-0 lg:space-x-8">
-        {/* Form Section */}
+
         <div className="w-full lg:w-1/2 bg-white p-6 rounded-lg shadow-md">
           <form className="space-y-6">
-            {/* Title */}
+
             <div className="flex flex-col">
               <label className="text-gray-700 font-medium mb-1">Title</label>
               <input
@@ -68,7 +67,6 @@ function CreateEvent() {
               />
             </div>
 
-            {/* Image */}
             <div className="flex flex-col">
               <label className="text-gray-700 font-medium mb-1">Image</label>
               <input
@@ -78,7 +76,6 @@ function CreateEvent() {
               />
             </div>
 
-            {/* Description */}
             <div className="flex flex-col">
               <label className="text-gray-700 font-medium mb-1">Description</label>
               <textarea
@@ -88,7 +85,6 @@ function CreateEvent() {
               />
             </div>
 
-            {/* Location */}
             <div className="flex flex-col">
               <label className="text-gray-700 font-medium mb-1">Location</label>
               <input
@@ -99,7 +95,6 @@ function CreateEvent() {
               />
             </div>
 
-            {/* Date */}
             <div className="flex flex-col">
               <label className="text-gray-700 font-medium mb-1">Date</label>
               <input
@@ -109,7 +104,6 @@ function CreateEvent() {
               />
             </div>
 
-            {/* Time */}
             <div className="flex flex-col">
               <label className="text-gray-700 font-medium mb-1">Time</label>
               <input
@@ -119,7 +113,6 @@ function CreateEvent() {
               />
             </div>
 
-            {/* Category */}
             <div className="flex flex-col">
               <label className="text-gray-700 font-medium mb-1">Category</label>
               <input
@@ -130,7 +123,6 @@ function CreateEvent() {
               />
             </div>
 
-            {/* Submit Button */}
             <button
               type="button"
               className="w-full bg-blue-500 text-white p-2 rounded-md"
@@ -141,7 +133,6 @@ function CreateEvent() {
           </form>
         </div>
 
-        {/* Preview Section */}
         <div className="w-full lg:w-1/2 bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-center text-xl font-semibold mb-6">Preview</h3>
           <EventCard

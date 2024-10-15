@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AxiosService from '../utils/AxiosService';
 import ApiRoutes from '../utils/ApiRoutes';
 import toast from 'react-hot-toast';
 import useLogout from "../hooks/useLogout.jsx"
 import { jwtDecode } from "jwt-decode";
+import authImage from '../assets/auth.jpg'
 
 function Login() {
   let [email, setEmail] = useState("")
@@ -13,14 +14,14 @@ function Login() {
   let navigate = useNavigate();
   let logout = useLogout();
 
-  const handleSubmit = async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let {message, token, role } = await AxiosService.post(ApiRoutes.LOGIN.path, {email, password}, {authenticate:ApiRoutes.LOGIN.auth})
-      
+      let { message, token, role } = await AxiosService.post(ApiRoutes.LOGIN.path, { email, password }, { authenticate: ApiRoutes.LOGIN.auth })
+
       const decodedToken = jwtDecode(token)
       const name = decodedToken.name
-      
+
       sessionStorage.setItem('token', token)
       sessionStorage.setItem('role', role)
       sessionStorage.setItem('name', name)
@@ -32,12 +33,14 @@ function Login() {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     logout();
-  },[])
+  }, [])
 
   return <>
-    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-teal-400 flex flex-col justify-center items-center">
+    <div className="min-h-screen bg-cover bg-center flex flex-col justify-center items-center"
+      style={{ backgroundImage: `url(${authImage})` }}
+    >
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
           Login
@@ -82,14 +85,14 @@ function Login() {
             </button>
           </div>
           <div className="mt-4 text-center">
-            <Link to="/user/forgot-password"
+            <Link to="/forgot-password"
               className="text-blue-500 hover:text-blue-700 text-sm font-bold"
             >
               Forgot Password?
             </Link>
           </div>
           <div className="mt-4 text-center">
-            <Link to="/user/signup"
+            <Link to="/signup"
               className="text-blue-500 hover:text-blue-700 text-sm font-bold"
             >
               Not Yet Registered?

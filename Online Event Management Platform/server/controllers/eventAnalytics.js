@@ -51,7 +51,6 @@ const getTotalRevenue = async(req, res)=>{
 const getAttendanceRate = async (req, res) => {
     const { eventId } = req.params;
     try {
-        // Fetch the event details
         const event = await eventDetailsModel.findOne({ eventId });
         if (!event) {
             return res.status(404).send({
@@ -59,7 +58,6 @@ const getAttendanceRate = async (req, res) => {
             });
         }
 
-        // Aggregate tickets sold based on the type (VIP or General)
         const ticketsSold = await purchasedTicketModel.aggregate([
             { $match: { eventId } },
             {

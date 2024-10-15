@@ -36,10 +36,14 @@ function AllUserTickets() {
                         <span className={`px-2 py-1 rounded text-xs font-medium ${color[ticket.paymentStatus] || 'text-black'}`}>
                             {ticket.paymentStatus}
                         </span>
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${color[ticket.status] || 'text-black'}`}>
+                            {ticket.status}
+                        </span>
                     </div>
 
                     <div className="text-sm text-gray-500">
                         <p className="mb-2"><strong>Ticket ID:</strong> {ticket.ticketId}</p>
+                        <p className="mb-2"><strong>Booking ID:</strong> {ticket.bookingId}</p>
                         <p className="mb-2"><strong>Event ID:</strong> {ticket.eventId}</p>
                         <p className="mb-2"><strong>Ticket Type:</strong> {ticket.ticket_type}</p>
                         <p className="mb-2"><strong>Quantity:</strong> {ticket.quantity}</p>

@@ -62,12 +62,11 @@ function Dashboard() {
 
           return (
             <div key={registration.registrationId || index} className="mb-8 flex justify-start items-center relative">
-              {/* Left dot */}
+           
               <div className="bg-blue-500 rounded-full h-8 w-8 flex justify-center items-center text-white font-bold absolute left-0">
                 {cumulativeIndex}
               </div>
 
-              {/* Event details */}
               <div className="ml-16 bg-white shadow-lg rounded-lg p-6 w-full">
                 <h3 className="text-xl font-bold mb-2">{event.title}</h3>
                 <div className="text-gray-500 text-sm mb-2">
@@ -80,7 +79,6 @@ function Dashboard() {
                   <i className="fas fa-user mr-1"></i> Registered by: {user.name}
                 </div>
 
-                {/* Registration status */}
                 <div
                   className="text-sm font-medium mb-4"
                   style={{ color: `${color[registration.status]}` }}
@@ -88,7 +86,6 @@ function Dashboard() {
                   Status: {registration.status || 'N/A'}
                 </div>
 
-                {/* Action buttons */}
                 <div className="flex space-x-2">
                   {buttons.map((button, btnIndex) =>
                     button.status.includes(registration.status) ? (

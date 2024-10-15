@@ -23,6 +23,10 @@ import UserProfile from "../components/UserProfile"
 import EventAnalytics from "../components/EventAnalytics"
 import EventCalender from "../components/EventCalender"
 import Layout from "../components/Layout"
+import ForgotPassword from "../components/ForgotPassword"
+import ResetPassword from "../components/ResetPassword"
+import CheckOutSuccess from "../components/CheckOutSuccess"
+import ContactPage from "../components/ContactPage"
 
 export default [
     {
@@ -36,6 +40,14 @@ export default [
     {
         path:'/signup',
         element:<Layout><Signup/></Layout>
+    },
+    {
+        path:'/forgot-password',
+        element:<Layout><ForgotPassword/></Layout>
+    },
+    {
+        path:'/reset-password/:token',
+        element:<Layout><ResetPassword/></Layout>
     },
     {
         path:'/dashboard',
@@ -104,6 +116,14 @@ export default [
     {
         path:'/profile',
         element:<ProtectedRoute><Layout><TopBar/><UserProfile/></Layout></ProtectedRoute>
+    },
+    {
+        path:'/success',
+        element:<ProtectedRoute><Layout><TopBar/><CheckOutSuccess/></Layout></ProtectedRoute>
+    },
+    {
+        path:'/contact',
+        element:<ProtectedRoute><Layout><TopBar/><ContactPage/></Layout></ProtectedRoute>
     },
     {
         path:'/*',

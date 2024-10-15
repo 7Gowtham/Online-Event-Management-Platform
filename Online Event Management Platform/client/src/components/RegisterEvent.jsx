@@ -49,7 +49,7 @@ function RegisterEvent() {
     <div className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6">Register for {formData.title}</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Display prefilled event details */}
+        
         <div>
           <label className="block font-semibold">Event ID:</label>
           <input
@@ -99,7 +99,6 @@ function RegisterEvent() {
         </div>
 
 
-        {/* Attendee Information */}
         <div>
           <label className="block font-semibold">Your Name:</label>
           <input

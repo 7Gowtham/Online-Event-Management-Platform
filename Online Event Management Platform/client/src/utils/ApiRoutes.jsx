@@ -7,6 +7,14 @@ export default {
         path:'/user/signup',
         auth:false
     },
+    FORGOT_PASSWORD:{
+        path:'/user/forgotPassword',
+        auth:false
+    },
+    RESET_PASSWORD:{
+        path:'/user/resetPassword',
+        auth:false
+    },
     GET_ALL_USERS:{
         path:'/user/getAllUsers',
         auth:true
@@ -21,6 +29,10 @@ export default {
     },
     GET_ALL_REGISTERED_EVENTS_BY_USERID:{
         path:'/user/getAllRegisteredEventsByUserId',
+        auth:true
+    },
+    GET_ALL_APPROVED_REGISTERED_EVENTS_BY_USERID:{
+        path:'/user/getAllApprovedRegisteredEventsByUserId',
         auth:true
     },
     CREATE_EVENT:{
@@ -59,6 +71,14 @@ export default {
         path:'/ticket/getAllUserTickets',
         auth:true
     },
+    CANCEL_TICKET:{
+        path:'/ticket/cancelTicket',
+        auth:true
+    },
+    GET_USER_REGISTRATION_STATUS:{
+        path:'/user/getUserRegistrationStatus',
+        auth:true
+    },
     ADMIN_CREATED_TICKETS:{
         path:'/ticket/getAllAdminCreatedTickets',
         auth:true
@@ -77,6 +97,10 @@ export default {
     },
     CHECKOUT_SESSION:{
         path:'/ticket/createCheckoutSession',
+        auth:true
+    },
+    CONFIRM_PAYMENT:{
+        path:'/ticket/confirmPayment',
         auth:true
     },
     GET_PROFILE:{

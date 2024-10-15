@@ -7,15 +7,7 @@ const LandingPage = () => {
     const navigate = useNavigate();
     
     return (
-        <div 
-          className="min-h-screen bg-cover bg-center flex flex-col justify-center items-center"
-          // style={{
-          //   backgroundImage: `url(${backgroundImage})`,
-          //   backgroundSize: 'cover',
-          //   backgroundPosition: 'center',
-          //   filter: 'brightness(90%)'
-          // }}
-        >
+        <div className="min-h-screen bg-cover bg-center flex flex-col justify-center items-center">
             <div className="text-center">
                 <img src={eventLogo} alt="Eventozor Logo" className="h-24 w-24 mb-4 mx-auto" />
                 <h1 className="text-white text-4xl font-bold mb-4">Welcome to Eventozor</h1>

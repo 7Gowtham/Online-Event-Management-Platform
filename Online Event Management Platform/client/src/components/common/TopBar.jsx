@@ -17,7 +17,8 @@ function TopBar() {
         { label: 'Ticket Dashboard', path: '/alltickets', role: ['Admin'] },
         { label: 'My Events', path: '/events', role: ['User'] },
         { label: 'My Tickets', path: '/mytickets', role: ['User'] },
-        { label: 'Profile', path: '/profile', role: ['Admin', 'User'] }
+        { label: 'Profile', path: '/profile', role: ['User'] },
+        { label: 'Contact', path: '/contact', role: ['User'] }
     ];
 
     let { pathname } = useLocation();
@@ -26,13 +27,14 @@ function TopBar() {
         <nav className="sticky top-0 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg z-10">
             <div className="px-4 py-2">
                 <div className="flex justify-between items-center">
-                    {/* Logo and Platform Name */}
+
                     <div className="flex items-center space-x-2">
                         <img src={eventLogo} alt="Eventozor Logo" className="h-8 w-8" />
-                        <h1 className="text-white font-bold text-xl">Eventozor</h1>
+                        <NavLink to="/home" className="text-white font-bold text-xl">
+                            Eventozor
+                        </NavLink>
                     </div>
 
-                    {/* Navbar Links */}
                     <div className="hidden md:flex items-center space-x-4">
                         {links.map((link, i) => (
                             link.role.includes(role) && (
@@ -51,7 +53,6 @@ function TopBar() {
                         ))}
                     </div>
 
-                    {/* Logout Button */}
                     <div className="flex items-center space-x-2">
                         <span className="text-white font-semibold text-md">
                             Hi, {name}!

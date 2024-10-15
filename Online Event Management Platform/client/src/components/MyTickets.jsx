@@ -1,33 +1,54 @@
-import React, { useEffect, useState } from 'react'
-import AxiosService from '../utils/AxiosService'
-import ApiRoutes from '../utils/ApiRoutes'
-import toast from 'react-hot-toast'
+import React, { useEffect, useState } from 'react';
+import AxiosService from '../utils/AxiosService';
+import ApiRoutes from '../utils/ApiRoutes';
+import toast from 'react-hot-toast';
 
 function MyTickets() {
-    let [tickets, setTickets] = useState([])
+    let [tickets, setTickets] = useState([]);
     const [expandedTicket, setExpandedTicket] = useState(null);
-    let color = { Paid: 'green', Pending: '#ffc107', Failed: 'red' }
+    const [loading, setLoading] = useState(false); 
+    const [cancelingTicketId, setCancelingTicketId] = useState(null); 
+
+    let color = { Paid: 'green', Pending: '#ffc107', Failed: 'red', Cancelled: 'grey' }; 
 
     const getData = async () => {
         try {
-            let { message, tickets } = await AxiosService.get(ApiRoutes.GET_USER_TICKET.path, { authenticate: ApiRoutes.GET_USER_TICKET.auth })
-            console.log(tickets)
+            let { message, tickets } = await AxiosService.get(ApiRoutes.GET_USER_TICKET.path, { authenticate: ApiRoutes.GET_USER_TICKET.auth });
             if (Array.isArray(tickets)) {
-                setTickets(tickets)
-                toast.success(message)
-            }
-            else {
+                setTickets(tickets);
+                toast.success(message);
+            } else {
                 toast.error("Unexpected data format");
             }
         } catch (error) {
-            toast.error(error.message || "Internal Server Error")
+            console.error(error.message || "Internal Server Error");
         }
-    }
+    };
+
+    const cancelTicket = async (bookingId) => {
+        setLoading(true); 
+        setCancelingTicketId(bookingId);  
+        try {
+            const { message } = await AxiosService.post(`${ApiRoutes.CANCEL_TICKET.path}/${bookingId}`, { authenticate: ApiRoutes.CANCEL_TICKET.auth });
+            toast.success(message);
+            
+            setTickets(tickets.map(ticket => 
+                ticket.bookingId === bookingId ? { ...ticket, status: 'Cancelled' } : ticket
+            ));
+
+        } catch (error) {
+            toast.error(error.message || "Failed to cancel ticket");
+        } finally {
+            setLoading(false);  
+            setCancelingTicketId(null); 
+        }
+    };
 
     useEffect(() => {
-        getData()
-    }, [])
-    return <>
+        getData();
+    }, []);
+
+    return (
         <div className="space-y-4">
             {Array.isArray(tickets) && tickets.map((ticket, i) => (
                 <div key={ticket._id} className="bg-white shadow-md rounded-lg">
@@ -39,6 +60,9 @@ function MyTickets() {
                             <p className="text-sm text-gray-500">
                                 Event ID: {ticket.eventId}
                             </p>
+                            <p className="text-sm text-gray-500">
+                                Booking ID: {ticket.bookingId}
+                            </p>
                         </div>
                         <button
                             type="button"
@@ -47,6 +71,19 @@ function MyTickets() {
                         >
                             {expandedTicket === i ? 'Hide Details' : 'Show Details'}
                         </button>
+
+                        {ticket.status !== 'Cancelled' ? (
+                            <button
+                                type="button"
+                                className={`ml-4 text-red-500 focus:outline-none ${loading && cancelingTicketId === ticket.bookingId ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                onClick={() => cancelTicket(ticket.bookingId)}
+                                disabled={loading && cancelingTicketId === ticket.bookingId} 
+                            >
+                                {loading && cancelingTicketId === ticket.bookingId ? 'Cancelling...' : 'Cancel Ticket'}
+                            </button>
+                        ) : (
+                            <span className="text-gray-500 ml-4">Cancelled</span>  
+                        )}
                     </div>
 
                     {expandedTicket === i && (
@@ -80,7 +117,7 @@ function MyTickets() {
                 </div>
             ))}
         </div>
-    </>
+    );
 }
 
-export default MyTickets
+export default MyTickets;

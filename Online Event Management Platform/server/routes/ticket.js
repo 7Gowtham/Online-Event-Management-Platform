@@ -11,5 +11,7 @@ router.post('/purchaseTicket/:eventId/:ticketId', verify, TicketController.purch
 router.get('/getUserTicket', verify, TicketController.getUserTicket)
 router.get('/getAllUserTickets', verify, verifyAdmin, TicketController.getAllUserTickets)
 router.post('/createCheckoutSession', verify, TicketController.createCheckoutSession)
+router.get('/confirmPayment', verify, TicketController.confirmPayment)
+router.post('/cancelTicket/:bookingId', verify, TicketController.cancelTicket)
 
 export default router

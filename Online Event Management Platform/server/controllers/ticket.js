@@ -1,25 +1,26 @@
 import eventModel from "../models/event.js"
-import {randomString} from "../common/helper.js"
+import { randomString } from "../common/helper.js"
 import ticketModel from "../models/ticket.js"
-import {paymentService} from '../common/paymentService.js'
-import {sendConfirmation} from "../common/mailService.js"
+import { sendConfirmation } from "../common/mailService.js"
+import { paymentService } from "../common/paymentService.js"
 import purchasedTicketModel from "../models/purchasedTickets.js"
 import 'dotenv/config.js'
 import Stripe from 'stripe';
 import eventDetailsModel from "../models/eventDetails.js"
+import userModel from "../models/user.js"
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-const createTicket = async(req, res)=>{
-    const {eventId, ticket_type, price, quantity} = req.body
+const createTicket = async (req, res) => {
+    const { eventId, ticket_type, price, quantity } = req.body
     try {
-        const event = await eventModel.findOne({eventId})
-        if(!event){
+        const event = await eventModel.findOne({ eventId })
+        if (!event) {
             res.status(400).send({
-                message:"Event not found"
+                message: "Event not found"
             })
         }
         const ticketId = randomString(5)
-        
+
         const ticket = await ticketModel.create({
             eventId,
             ticketId,
@@ -44,16 +45,16 @@ const createTicket = async(req, res)=>{
     }
 }
 
-const getAllAdminCreatedTickets = async(req, res)=>{
+const getAllAdminCreatedTickets = async (req, res) => {
     try {
         let tickets = await ticketModel.find()
-        if(!tickets.length){
+        if (!tickets.length) {
             return res.status(404).send({
-                message:'No tickets found'
+                message: 'No tickets found'
             })
         }
         res.status(200).send({
-            message:"Fetched all the tickets which are created",
+            message: "Fetched all the tickets which are created",
             tickets
         })
 
@@ -66,7 +67,7 @@ const getAllAdminCreatedTickets = async(req, res)=>{
 }
 
 const purchaseTicket = async (req, res) => {
-    const { ticket_type, quantity, paymentGateway, email } = req.body;
+    const { ticket_type, quantity, paymentGateway } = req.body;
     const userId = req.headers.userId;
     const { eventId, ticketId } = req.params;
 
@@ -104,12 +105,13 @@ const purchaseTicket = async (req, res) => {
                 message: "Not enough General tickets available for this event.",
             });
         }
-
+        const bookingId = randomString(5)
         const totalAmount = price * quantity;
 
         const ticket = await purchasedTicketModel.create({
             eventId,
             ticketId,
+            bookingId,
             userId,
             ticket_type,
             price,
@@ -141,11 +143,6 @@ const purchaseTicket = async (req, res) => {
 
             await event.save();
 
-            await sendConfirmation({
-                userId,
-                ticketId: ticket.ticketId,
-                email,
-            });
 
             res.status(200).send({
                 message: "Ticket Purchased Successfully",
@@ -167,18 +164,17 @@ const purchaseTicket = async (req, res) => {
     }
 };
 
-
-const getUserTicket = async(req, res)=>{
+const getUserTicket = async (req, res) => {
     const userId = req.headers.userId
     try {
-        const tickets = await purchasedTicketModel.find({userId}).populate('eventId')
-        if(!tickets.length){
+        const tickets = await purchasedTicketModel.find({ userId }).populate('eventId')
+        if (!tickets.length) {
             return res.status(404).send({
-                message:'No tickets found'
+                message: 'No tickets found'
             })
         }
         res.status(200).send({
-            message:"Fetched the tickets by userId",
+            message: "Fetched the tickets by userId",
             tickets
         })
     } catch (error) {
@@ -189,18 +185,19 @@ const getUserTicket = async(req, res)=>{
     }
 }
 
-const getAllUserTickets = async(req, res)=>{
+const getAllUserTickets = async (req, res) => {
     try {
         let tickets = await purchasedTicketModel.find({})
+        console.log('tickets', tickets)
 
-        if(!tickets.length){
+        if (!tickets.length) {
             return res.status(404).send({
-                message:"No Tickets found"
+                message: "No Tickets found"
             })
         }
 
         res.status(200).send({
-            message:"Fetched all the tickets",
+            message: "Fetched all the tickets",
             tickets
         })
     } catch (error) {
@@ -211,59 +208,97 @@ const getAllUserTickets = async(req, res)=>{
     }
 }
 
+
 const createCheckoutSession = async(req, res)=>{
-    const {quantity, ticketId, ticketPrice} = req.body
+    const {quantity, ticketId, ticketPrice, paymentGateway, email} = req.body
     const userId = req.headers.userId
     try {
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'], // Types of payment methods
+            payment_method_types: ['card'],
             line_items: [
                 {
                     price_data: {
-                      currency: 'usd', // Or any currency you're working with
+                      currency: 'INR',
                       product_data: {
-                        name: `Ticket for event: ${ticketId}`, // Ticket description
+                        name: `Ticket for event: ${ticketId}`, 
                       },
-                      unit_amount: ticketPrice * 100, // Stripe expects price in cents
+                      unit_amount: ticketPrice * 100, 
                     },
                     quantity: quantity,
                   },
             ],
-            mode: 'payment', // Mode is set to 'payment' for one-time purchases
+            mode: 'payment', 
             success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.CLIENT_URL}/cancel`,
             metadata: {
-              userId, // Additional metadata to be sent with the payment
+              userId, 
               ticketId,
+              email
             },
           });
       
-          // Send session ID to the frontend
-          res.status(200).json({ id: session.id });
+          res.status(200).send({
+            id: session.id,
+            url: session.url
+          })
     } catch (error) {
         console.error('Error creating Stripe checkout session:', error);
         res.status(500).json({ error: 'Failed to create Stripe checkout session' });
     }
 }
 
+
+const confirmPayment = async (req, res) => {
+    const { session_id } = req.query;
+
+    try {
+        const session = await stripe.checkout.sessions.retrieve(session_id);
+        console.log(session)
+        if (session.payment_status === 'paid') {
+            
+            const { userId, ticketId, email } = session.metadata;
+
+            await purchasedTicketModel.updateOne(
+                { ticketId }, 
+                { 
+                    paymentStatus: 'Paid',
+                    transactionId: session.payment_intent
+                }
+            );
+
+            await sendConfirmation({ userId, ticketId, email });
+
+            res.status(200).send({
+                message: 'Payment confirmed successfully.' ,
+                transactionId: session.payment_intent
+            })
+        } else {
+            
+            res.status(400).json({ message: 'Payment not completed.' });
+        }
+    } catch (error) {
+        console.error('Error confirming payment:', error);
+        res.status(500).json({ error: 'Failed to confirm payment.' });
+    }
+};
+
+
 const deleteTicket = async (req, res) => {
     try {
         const { eventId, ticketId } = req.params;
-        
+
         const ticket = await purchasedTicketModel.findOne({ ticketId, eventId });
 
         if (!ticket) {
             return res.status(404).send({ message: "Ticket not found" });
         }
 
-        // Find the event associated with the ticket
         const event = await eventDetailsModel.findOne({ eventId });
 
         if (!event) {
             return res.status(404).send({ message: "Event not found" });
         }
 
-        // Update the event's tickets sold count based on the ticket type
         if (ticket.ticket_type === "VIP") {
             event.vipTicketsSold -= ticket.quantity;
         } else if (ticket.ticket_type === "General") {
@@ -284,6 +319,28 @@ const deleteTicket = async (req, res) => {
     }
 };
 
+const cancelTicket = async(req, res)=>{
+    const {bookingId} = req.params;
+    try {
+        const ticket = await purchasedTicketModel.findOne({bookingId});
+        console.log(ticket)
+        if (!ticket) {
+            return res.status(404).send({ message: 'Ticket not found' });
+        }
+        ticket.status = 'Cancelled'
+        await ticket.save()
+
+        res.status(200).send({
+            message: 'Ticket has been canceled',
+            ticket
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: error.message || "Internal Server Error",
+            error
+        });
+    }
+}
 
 export default {
     createTicket,
@@ -292,5 +349,7 @@ export default {
     getUserTicket,
     getAllUserTickets,
     createCheckoutSession,
-    deleteTicket
+    confirmPayment,
+    deleteTicket,
+    cancelTicket
 }

@@ -13,5 +13,9 @@ router.put('/updateProfile', verify, UserController.updateProfile)
 router.post('/registerEvent', verify, UserController.registerEvent)
 router.post('/signup', UserController.signup)
 router.post('/login', UserController.login)
+router.get('/getUserRegistrationStatus/:eventId', verify, UserController.getUserRegistrationStatus)
+router.get('/getAllApprovedRegisteredEventsByUserId', verify, UserController.getAllApprovedRegisteredEventsByUserId)
+router.post('/forgotPassword', UserController.forgotPassword)
+router.post('/resetPassword/:token', UserController.resetPassword)
 
 export default router

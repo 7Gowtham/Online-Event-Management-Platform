@@ -1,5 +1,5 @@
 import React from 'react';
-import backgroundImage from '../assets/backgroundimage1.jpg';
+import backgroundImage from '../assets/bg-image.png';
 
 const Layout = ({ children }) => {
   return (

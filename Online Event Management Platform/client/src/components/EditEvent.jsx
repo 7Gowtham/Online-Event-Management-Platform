@@ -13,10 +13,7 @@ function EditEvent() {
     location: '',
     date: '',
     time: '',
-    category: '',
-    vipPrice: '',
-    generalPrice: '',
-    totalTickets: ''
+    category: ''
   });
 
   const getData = async (eventId) => {
@@ -57,10 +54,9 @@ function EditEvent() {
   }
 
   return <>
-    <form className="w-full max-w-lg mx-auto p-4 bg-white shadow-md rounded-md">
+    <form className="w-full max-w-lg mx-auto p-4 mt-6 bg-white shadow-md rounded-md">
       <h1 className="text-2xl font-bold mb-4">Edit Event</h1>
 
-      {/* Title */}
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">Title</label>
         <input
@@ -73,7 +69,6 @@ function EditEvent() {
         />
       </div>
 
-      {/* Description */}
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">Description</label>
         <textarea
@@ -85,7 +80,6 @@ function EditEvent() {
         />
       </div>
 
-      {/* Location */}
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">Location</label>
         <input
@@ -98,7 +92,6 @@ function EditEvent() {
         />
       </div>
 
-      {/* Date */}
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">Date</label>
         <input
@@ -111,7 +104,6 @@ function EditEvent() {
         />
       </div>
 
-      {/* Time */}
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="time">Time</label>
         <input
@@ -124,7 +116,6 @@ function EditEvent() {
         />
       </div>
 
-      {/* Category */}
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">Category</label>
         <input
@@ -137,52 +128,12 @@ function EditEvent() {
         />
       </div>
 
-      {/* VIP Price */}
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="vipPrice">VIP Price</label>
-        <input
-          type="number"
-          name="vipPrice"
-          value={eventData.vipPrice || ''}
-          onChange={handleChange}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          placeholder="VIP Ticket Price"
-        />
-      </div>
-
-      {/* General Price */}
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="generalPrice">General Price</label>
-        <input
-          type="number"
-          name="generalPrice"
-          value={eventData.generalPrice || ''}
-          onChange={handleChange}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          placeholder="General Ticket Price"
-        />
-      </div>
-
-      {/* Total Tickets */}
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="totalTickets">Total Tickets</label>
-        <input
-          type="number"
-          name="totalTickets"
-          value={eventData.totalTickets || ''}
-          onChange={handleChange}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          placeholder="Total Tickets"
-        />
-      </div>
-
-      {/* Edit Button */}
       <div className="flex items-center justify-between">
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           onClick={handleUpdate}
         >
-          Edit Event
+          Save Changes
         </button>
       </div>
     </form>

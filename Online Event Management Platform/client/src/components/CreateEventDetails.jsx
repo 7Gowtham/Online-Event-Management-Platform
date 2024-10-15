@@ -40,8 +40,11 @@ function CreateEventDetails() {
             reader.readAsDataURL(selectedFile)
 
             reader.onload = () => {
-            setImage(reader.result)
-            }
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    image: reader.result
+                }));
+            };
         }
         else {
             toast.error(`Only File Type of ${allowedExtensions.join(',')} are allowed`)
@@ -71,7 +74,6 @@ function CreateEventDetails() {
             <h1 className="text-2xl font-semibold mb-6">Create Event Details</h1>
 
             <form onSubmit={handleSubmit} encType="multipart/form-data">
-                {/* Event ID */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Event ID</label>
                     <input
@@ -85,7 +87,6 @@ function CreateEventDetails() {
                     />
                 </div>
 
-                {/* Title */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Title</label>
                     <input
@@ -99,7 +100,6 @@ function CreateEventDetails() {
                     />
                 </div>
 
-                {/* Description */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Description</label>
                     <textarea
@@ -112,7 +112,6 @@ function CreateEventDetails() {
                     />
                 </div>
 
-                {/* Location */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Location</label>
                     <input
@@ -126,7 +125,6 @@ function CreateEventDetails() {
                     />
                 </div>
 
-                {/* Date */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Date</label>
                     <input
@@ -139,7 +137,6 @@ function CreateEventDetails() {
                     />
                 </div>
 
-                {/* Time */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Time</label>
                     <input
@@ -152,7 +149,6 @@ function CreateEventDetails() {
                     />
                 </div>
 
-                {/* Category */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Category</label>
                     <input
@@ -166,7 +162,6 @@ function CreateEventDetails() {
                     />
                 </div>
 
-                {/* VIP Price */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">VIP Price</label>
                     <input
@@ -180,7 +175,6 @@ function CreateEventDetails() {
                     />
                 </div>
 
-                {/* General Price */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">General Price</label>
                     <input
@@ -194,7 +188,6 @@ function CreateEventDetails() {
                     />
                 </div>
 
-                {/* Total Tickets */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">VIP Total Tickets</label>
                     <input
@@ -221,7 +214,6 @@ function CreateEventDetails() {
                     />
                 </div>
 
-                {/* Image Upload */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Image</label>
                     <input
@@ -232,18 +224,6 @@ function CreateEventDetails() {
                         className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                     />
                 </div>
-
-                {/* Video Upload */}
-                {/* <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Video</label>
-                    <input
-                        type="file"
-                        name="video"
-                        accept="video/*"
-                        onChange={handleInputChange}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                    />
-                </div> */}
 
                 <div className="flex justify-end">
                     <button

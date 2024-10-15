@@ -1,16 +1,13 @@
 import auth from "../common/auth.js";
-import userModel from "../models/user.js";
 
 const verifyAdmin = async(req, res, next)=>{
     try {
         let token = req.headers.authorization ?.split(" ")[1]
         if(token){
             let payload = await auth.decodeToken(token)
-            // console.log("Decoded Payload:", payload); 
-            let user = await userModel.findById(payload._id)
-            // console.log("Found User:", user);
+            console.log("Decoded Payload:", payload);
 
-            if(user && payload.role === "Admin" && user.role === payload.role){
+            if(payload.role === "Admin"){
                 next()
             }
             else{

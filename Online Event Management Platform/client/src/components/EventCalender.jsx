@@ -4,6 +4,7 @@ import ApiRoutes from '../utils/ApiRoutes'
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import calenderImg from '../assets/cal-img.png'
 
 function EventCalender() {
     const [events, setEvents] = useState([])
@@ -29,7 +30,8 @@ function EventCalender() {
     },[])
     
     return <>
-        <div className="container mx-auto p-5">
+        <div className="container mx-auto p-5"
+        style={{ backgroundImage: `url(${calenderImg})` }}>
             <h1 className="text-3xl font-bold mb-5">Event Calendar</h1>
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin]}
